@@ -32,8 +32,14 @@ public class EnvioDeEmail {
 		
 	}
 	
-	
-	public void enviarEmail() throws Exception {
+	/**
+	 * Authenticates the connection with the mailing server, configures the message and sends the e-mail. 
+	 * This method will be broken up into smaller methods to clean up the code.
+	 * @param	isHtml A boolean indicating if there is HTML tags in the message to be sent.
+	 * @version 0.1 2022-04-01
+	 * @author Alejandro Costa
+	 * */
+	public void enviarEmail(boolean isHtml) throws Exception {
 		
 		//Configuração das propriedades
 		Properties properties = new Properties();
@@ -58,7 +64,12 @@ public class EnvioDeEmail {
 		message.setFrom(new InternetAddress(userMailData.getUserMailAddress(), identificacaoDoRemetente));
 		message.setRecipients(Message.RecipientType.TO, toUser);
 		message.setSubject(assuntoDoEmail);
-		message.setText(textoDoEmail);
+		
+		if (isHtml) {
+			message.setContent(textoDoEmail, "text/html; charset=utf-8");
+		} else {			
+			message.setText(textoDoEmail);
+		}
 		
 		Transport.send(message);
 		
